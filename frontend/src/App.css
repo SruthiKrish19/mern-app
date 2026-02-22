@@ -1,0 +1,105 @@
+/* General body styling */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 0;
+}
+
+/* Main App container styling */
+.App {
+  text-align: center;
+  max-width: 500px;
+  margin: 50px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+}
+
+/* Heading styling */
+h1 {
+  color: #333;
+  margin-bottom: 30px;
+}
+
+/* Form for adding new todos */
+form {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+form input {
+  flex-grow: 1;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-right: 10px;
+  font-size: 16px;
+}
+
+form button {
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.2s ease;
+}
+
+form button:hover {
+  background-color: #0056b3;
+}
+
+/* Unordered list for displaying todos */
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+/* Individual list item styling */
+li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #eee;
+  font-size: 18px;
+}
+
+li:last-child {
+  border-bottom: none;
+}
+
+/* Styling for the todo text (span) */
+li span {
+  cursor: pointer;
+  flex-grow: 1;
+  text-align: left;
+  padding-right: 10px;
+}
+
+/* Styling for completed todo items */
+li.completed span {
+  text-decoration: line-through;
+  color: #888;
+}
+
+/* Styling for the delete button */
+li button {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s ease;
+}
+
+li button:hover {
+  background-color: #c82333;
+}
