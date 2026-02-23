@@ -4,68 +4,76 @@ const router = express.Router();
 const Todo = require('../models/Todo'); // Import the Todo model to interact with the database
 
 // GET all todo items
-// Handles requests to retrieve all todos from the database.
 router.get('/', async (req, res) => {
     try {
-        const todos = await Todo.find(); // Find all documents in the 'todos' collection
-        res.json(todos); // Send todos as JSON response
+        const todos = await Todo.find();
+        res.json(todos);
     } catch (err) {
-        res.status(500).json({ message: err.message }); // Handle server errors
+        res.status(500).json({ message: err.message });
+    }
+});
+
+// GET a single todo by ID
+router.get('/:id', async (req, res) => {
+    try {
+        const todo = await Todo.findById(req.params.id);
+        if (!todo) return res.status(404).json({ message: 'Todo not found' });
+        res.json(todo);
+    } catch (err) {
+        res.status(400).json({ message: err.message });
     }
 });
 
 // POST a new todo item
-// Handles requests to create a new todo item.
 router.post('/', async (req, res) => {
+    const { title, description, due, is_active } = req.body;
+
+    if (!title) {
+        return res.status(400).json({ message: 'Title is required' });
+    }
+
     const todo = new Todo({
-        text: req.body.text // Get todo text from request body
+        title,
+        description: description || '',
+        due: due ? new Date(due) : null,
+        is_active: is_active === undefined ? true : !!is_active
     });
 
     try {
-        const newTodo = await todo.save(); // Save the new todo to the database
-        res.status(201).json(newTodo); // Respond with the created todo
+        const newTodo = await todo.save();
+        res.status(201).json(newTodo);
     } catch (err) {
-        res.status(400).json({ message: err.message }); // Handle validation errors
+        res.status(400).json({ message: err.message });
     }
 });
 
 // PUT (Update) an existing todo item by ID
-// Handles requests to update a todo item's text or completed status.
 router.put('/:id', async (req, res) => {
     try {
-        const todo = await Todo.findById(req.params.id); // Find the todo by ID from URL params
+        const todo = await Todo.findById(req.params.id);
+        if (!todo) return res.status(404).json({ message: 'Todo not found' });
 
-        if (!todo) {
-            return res.status(404).json({ message: 'Todo not found' });
-        }
+        const { title, description, due, is_active } = req.body;
+        if (title !== undefined) todo.title = title;
+        if (description !== undefined) todo.description = description;
+        if (due !== undefined) todo.due = due ? new Date(due) : null;
+        if (is_active !== undefined) todo.is_active = !!is_active;
 
-        if (req.body.text) {
-            todo.text = req.body.text; // Update text if provided
-        }
-        if (req.body.completed !== undefined) {
-            todo.completed = req.body.completed; // Update completed status if provided
-        }
-
-        const updatedTodo = await todo.save(); // Save the updated todo
-        res.json(updatedTodo); // Respond with the updated todo
+        const updatedTodo = await todo.save();
+        res.json(updatedTodo);
     } catch (err) {
-        res.status(400).json({ message: err.message }); // Handle errors (e.g., invalid ID)
+        res.status(400).json({ message: err.message });
     }
 });
 
 // DELETE a todo item by ID
-// Handles requests to delete a todo item.
 router.delete('/:id', async (req, res) => {
     try {
-        const result = await Todo.findByIdAndDelete(req.params.id); // Find and delete the todo
-
-        if (!result) {
-            return res.status(404).json({ message: 'Todo not found' });
-        }
-
-        res.json({ message: 'Todo deleted successfully' }); // Respond with success message
+        const result = await Todo.findByIdAndDelete(req.params.id);
+        if (!result) return res.status(404).json({ message: 'Todo not found' });
+        res.json({ message: 'Todo deleted successfully' });
     } catch (err) {
-        res.status(500).json({ message: err.message }); // Handle server errors
+        res.status(500).json({ message: err.message });
     }
 });
 

@@ -1,20 +1,26 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-// Define the schema for the Todo model
-// This schema defines the structure and types of data for todo items in MongoDB.
+// Basic Todo schema following the technical plan (no audit fields)
 const TodoSchema = new Schema({
-    // 'text' stores the description of the todo item. It's required.
-    text: {
+    title: {
         type: String,
-        required: true
+        required: true,
+        maxlength: 255,
+        trim: true
     },
-    // 'completed' indicates if the todo is done. Defaults to false.
-    completed: {
+    description: {
+        type: String,
+        default: ''
+    },
+    due: {
+        type: Date,
+        default: null
+    },
+    is_active: {
         type: Boolean,
-        default: false
+        default: true
     }
 });
 
-// Export the Todo model. 'Todo' will be the name of the collection in MongoDB.
 module.exports = mongoose.model('Todo', TodoSchema);

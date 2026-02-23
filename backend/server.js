@@ -10,9 +10,9 @@ app.use(express.json());
 app.use(cors());
 
 // MongoDB Connection Setup
-// IMPORTANT: Replace 'YOUR_MONGODB_CONNECTION_STRING' with your actual MongoDB connection string.
+// IMPORTANT: Set `MONGO_URI` in the environment or replace the fallback below.
 // Example: 'mongodb://localhost:27017/todoapp' or a MongoDB Atlas connection string.
-const mongoURI = 'YOUR_MONGODB_CONNECTION_STRING';
+const mongoURI = process.env.MONGO_URI || 'YOUR_MONGODB_CONNECTION_STRING';
 
 mongoose.connect(mongoURI, {
     useNewUrlParser: true,
@@ -25,9 +25,9 @@ mongoose.connect(mongoURI, {
     console.error('MongoDB connection error:', err);
 });
 
-// Import and use todo routes
+// Import and use todo routes (mount at /api/v1/to-do per technical plan)
 const todosRouter = require('./routes/todos');
-app.use('/todos', todosRouter); // All requests to /todos will be handled by todosRouter
+app.use('/api/v1/to-do', todosRouter);
 
 // Server Port Configuration
 const port = process.env.PORT || 5000;
