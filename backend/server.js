@@ -12,12 +12,9 @@ app.use(cors());
 // MongoDB Connection Setup
 // IMPORTANT: Set `MONGO_URI` in the environment or replace the fallback below.
 // Example: 'mongodb://localhost:27017/todoapp' or a MongoDB Atlas connection string.
-const mongoURI = process.env.MONGO_URI || 'YOUR_MONGODB_CONNECTION_STRING';
+const mongoURI = 'mongodb://localhost:27017/todoappp'; // Fallback URI for local development
 
-mongoose.connect(mongoURI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-})
+mongoose.connect(mongoURI)
 .then(() => {
     console.log('MongoDB connected successfully!');
 })
